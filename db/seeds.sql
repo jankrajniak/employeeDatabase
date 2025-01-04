@@ -1,0 +1,48 @@
+INSERT INTO department (name) VALUES 
+('Manufacturing'), 
+('Inventory'), 
+('Fullfilment'), 
+('Customer Service'), 
+('Sales'), 
+('Marketing'), 
+('Accounting'), 
+('Human Resources'), 
+('IT');
+
+INSERT INTO role (title, salary, department) VALUES 
+('Production Manager', 100000, 1), 
+('Production Supervisor', 75000, 1), 
+('Production Worker', 50000, 1), 
+('Inventory Manager', 100000, 2), 
+('Inventory Clerk', 50000, 2), 
+('Fullfilment Manager', 100000, 3), 
+('Fullfilment Supervisor', 75000, 3), 
+('Fullfilment Clerk', 50000, 3), 
+('Customer Service Manager', 100000, 4), 
+('Customer Service Rep', 50000, 4), 
+('Sales Manager', 100000, 5), 
+('Sales Rep', 50000, 5), 
+('Marketing Manager', 100000, 6), 
+('Marketing Rep', 50000, 6), 
+('Accounting Clerk', 50000, 7),  
+('HR Clerk', 50000, 8), 
+('IT Specialist', 50000, 9);
+
+INSERT INTO employee (first_name,last_name, role_id, manager_id) VALUES 
+('John', 'Faulkner', 1, NULL), 
+('Jane', 'Adamson', 2, 1), 
+('Jim', 'Edgars', 3, 2), 
+('Jill', 'Donovan', 4, NULL), 
+('Jack', 'Smithers', 5, 4), 
+('Jenny', 'Parkers', 6, NULL), 
+('Jared', 'Berger', 7, 6), 
+('Jasmine', 'Halloway', 8, 7), 
+('Jasper', 'Thomas', 9, NULL),
+('Nicholas', 'Tawney', 10, 9),
+('Natalie', 'Rawlison', 11, NULL),
+('Edgar', 'Odoyle', 12, 11),
+('Milan', 'Bertolli', 13, NULL),
+('Deshawna', 'Miller', 14, 13),
+('Derek', 'Twine', 15, NULL),
+('Anthony', 'Smith', 16, NULL),
+('Michael', 'Arlington', 17, NULL);
