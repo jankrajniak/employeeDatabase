@@ -156,9 +156,9 @@ export class updateData {
         })
     }
 
-    static async updateEmployeeRole (role: number[]) {
+    static async updateEmployee (update: (number | null )[]) {
         return new Promise ((resolve, reject) => {
-            pool.query(queries.updateEmployeeRole, role, (err: Error, res: QueryResult) => {
+            pool.query(queries.updateEmployee, update, (err: Error, res: QueryResult) => {
                 if (err) {
                     console.log('Error updating employee role: ', err);
                     reject(err);

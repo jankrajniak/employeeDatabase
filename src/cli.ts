@@ -1,8 +1,10 @@
 // IMPORT THIRD PARTY PACKAGES
 import inquirer from 'inquirer';
+import Table from 'cli-table3';
 
 // IMPORT CUSTOM PACKAGES
 import { retrieveData, updateData } from './dbInterface.js';
+
 
 
 class Cli {
@@ -16,7 +18,7 @@ class Cli {
                 choices: [
                     'View All Employees',
                     'Add Employee',
-                    'Update Employee Role',
+                    'Update Employee',
                     'View All Roles',
                     'Add Role',
                     'View All Departments',
@@ -35,7 +37,7 @@ class Cli {
                 await this.addEmployee();
                 this.menuOptions();
                 break;
-            case 'Update Employee Role':
+            case 'Update Employee':
                 await this.updateEmployeeRole();
                 this.menuOptions();
                 break;
@@ -63,7 +65,7 @@ class Cli {
 
     async viewAllEmployees(): Promise<void> {
         const employees = await retrieveData.allEmployees();
-        console.table(employees);
+        this.buildTable(employees);
     }
 
     async addEmployee(): Promise<void> {
@@ -115,6 +117,8 @@ class Cli {
     async updateEmployeeRole(): Promise<void> {
         const employeesData = await retrieveData.nameEmployees();
         const employees = employeesData.map((employee:any) => employee.name);
+        const managers = [...employees];
+        managers.push('None');
         const rolesData = await retrieveData.titleRoles();
         const roles = rolesData.map((role:any) => role.title);
 
@@ -130,19 +134,30 @@ class Cli {
                 name: 'role',
                 message: 'Choose a new role for the employee',
                 choices: roles
+            },
+            {
+                type: 'list',
+                name: 'manager',
+                message: 'Chose a new manager for the employee',
+                choices: managers
             }
         ]);
 
-        const role_id:any = await retrieveData.matchRoleId([userInput.role]);
+        const roleId:any = await retrieveData.matchRoleId([userInput.role]);
         const employeeId:any = await retrieveData.matchEmployeeId([userInput.employee]);
-        const newRoleId: number[] = [role_id[0].id, employeeId[0].id];
+        let managerId:(number | null) = null;
+        if (userInput.manager !== 'None') {
+            const newManagerId: any = await retrieveData.matchEmployeeId([userInput.manager]);
+            managerId = newManagerId[0].id;
+        }
+        const update: (number | null) [] = [roleId[0].id, managerId, employeeId[0].id];
 
-        await updateData.updateEmployeeRole(newRoleId);
+        await updateData.updateEmployee(update);
     }
 
     async viewAllRoles(): Promise<void> {
         const roles = await retrieveData.allRoles();
-        console.table(roles);
+        this.buildTable(roles);
     }
 
     async addRole(): Promise<void> {
@@ -176,7 +191,7 @@ class Cli {
 
     async viewAllDepartments(): Promise<void> {
         const departments = await retrieveData.allDepartments();
-        console.table(departments);
+        this.buildTable(departments);
     }
 
     async addDepartment(): Promise<void> {
@@ -191,6 +206,20 @@ class Cli {
         const newDepartment: string[] = [userInput.department];
 
         await updateData.createDepartment(newDepartment);
+    }
+
+    buildTable(data: any): void {
+        const headers:string[] = Object.keys(data[0]);
+
+        const table:Table.Table = new Table({
+            head: headers,
+        })
+
+        data.forEach((row:object) => {
+            table.push(Object.values(row));
+        });
+
+        console.log(table.toString());
     }
 
 }

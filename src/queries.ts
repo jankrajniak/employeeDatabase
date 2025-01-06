@@ -67,10 +67,10 @@
     createEmployee:
     `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ($1, $2, $3, $4);`,
 
-    updateEmployeeRole:
+    updateEmployee:
     `UPDATE employee
-    SET role_id = $1
-    WHERE id = $2;`
+    SET role_id = $1, manager_id = $2
+    WHERE id = $3;`
 }
 
 export default queries;
